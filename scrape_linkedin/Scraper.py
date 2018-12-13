@@ -41,6 +41,7 @@ class Scraper(object):
         self.scroll_increment = scroll_increment
         self.timeout = timeout
         self.driver.get('http://www.linkedin.com')
+        print(driver.page_source)
         self.driver.set_window_size(1920, 1080)
 
         if 'LI_EMAIL' in environ and 'LI_PASS' in environ:
@@ -68,10 +69,7 @@ class Scraper(object):
         email_input.send_keys(email)
         password_input.send_keys(password)
         password_input.send_keys(Keys.ENTER)
-
-    def get_html(self, url):
-        self.load_profile_page(url)
-        return self.driver.page_source
+        # print(self.driver.page_source)
 
     def scroll_to_bottom(self):
         """Scroll to the bottom of the page
