@@ -49,7 +49,7 @@ class ProfileScraper(Scraper):
                 1. Invalid LI_AT value: ensure that yours is correct (they
                    update frequently)
                 2. Slow Internet: increase the timeout parameter in the Scraper constructor""")
-
+        print(self.driver.page_source)
         # Check if we got the 'profile unavailable' page
         try:
             self.driver.find_element_by_css_selector('.pv-top-card-section')

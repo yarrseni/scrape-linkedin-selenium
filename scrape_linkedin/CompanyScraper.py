@@ -41,6 +41,7 @@ class CompanyScraper(Scraper):
         url = 'https://www.linkedin.com/company/{}/about'.format(company)
 
         self.driver.get(url)
+        print(self.driver.page_source)
         try:
             myElem = WebDriverWait(self.driver, self.timeout).until(AnyEC(
                 EC.presence_of_element_located(
