@@ -71,3 +71,7 @@ def test_company_scraper():
                        'num_employees', 'industry', 'type', 'company_size', 'headquarters', 'image']
     for a in overview_fields:
         assert overview[a]
+
+
+if __name__ == "__main__":
+    test_profile_scraper()
