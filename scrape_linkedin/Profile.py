@@ -7,7 +7,7 @@ class Profile(ResultsObject):
     """Linkedin User Profile Object"""
 
     attributes = ['personal_info', 'experiences',
-                  'skills', 'accomplishments', 'interests']
+                  'skills', 'accomplishments', 'interests', 'also_viewed']
 
     @property
     def personal_info(self):
@@ -149,6 +149,20 @@ class Profile(ResultsObject):
         interests = map(lambda i: text_or_default(
             i, '.pv-entity__summary-title'), interests)
         return list(interests)
+
+    @property
+    def also_viewed(self):
+        """
+        Returns:
+            list of users suggestions
+        """
+        also_viewed = all_or_default(self.soup, 'li.pv-browsemap-section__member-container')
+
+        also_viewed_data = [{"link": x.select("a")[0].attrs['href'],
+                             "name": x.select("a")[0].text.strip().split("\n")[0],
+                             "title": x.select("a")[0].text.strip().split("\n")[-1]} for x in also_viewed]
+
+        return also_viewed_data
 
     def to_dict(self):
         info = super(Profile, self).to_dict()

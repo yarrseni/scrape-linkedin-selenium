@@ -38,7 +38,7 @@ class ProfileScraper(Scraper):
         """
         if user:
             url = 'http://www.linkedin.com/in/' + user
-        if 'com/in/' not in url and 'sales/gmail/profile/proxy/' not in url:
+        if 'com/in/' not in url and 'sales/gmail/profile/proxy/' not in url and not url.startswith("file:"):
             raise ValueError(
                 "Url must look like... .com/in/NAME or... '.com/sales/gmail/profile/proxy/EMAIL")
         self.driver.get(url)
@@ -73,11 +73,15 @@ class ProfileScraper(Scraper):
         try:
             profile = self.driver.find_element_by_css_selector(
                 self.MAIN_SELECTOR).get_attribute("outerHTML")
+            also_viewed = "<ul>" + "\n".join([x.get_attribute("outerHTML") for x in
+                                              self.driver.find_elements_by_css_selector(
+                                                  "li.pv-browsemap-section__member-container")]) + "\n</ul>"
         except:
             raise Exception(
-                "Could not find profile wrapper html. This sometimes happens for exceptionally long profiles.  Try decreasing scroll-increment.")
+                "Could not find profile wrapper html. "
+                "This sometimes happens for exceptionally long profiles. Try decreasing scroll-increment.")
         contact_info = self.get_contact_info()
-        return Profile(profile + contact_info)
+        return Profile(profile + contact_info + also_viewed)
 
     def get_contact_info(self):
         try:
